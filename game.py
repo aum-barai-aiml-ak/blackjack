@@ -46,8 +46,49 @@ class Player:
 
 
 class Dealer(Player):
-	def printHand(self, round_num=0):
-		if round_num == 1:
-			print("Dealer's Hand:", self.hand[1])
-		else:
-			print("Dealer's Hand:", *self.hand)
+    def printHand(self, round_num=0):
+        if round_num == 1:
+            print("Dealer's Hand:", self.hand[1])
+        else:
+            print("Dealer's Hand:", *self.hand)
+
+
+class Game:
+
+    def calculateHand(self, hand):
+        hand_value = 0
+        num_aces = 0
+
+        for card in hand:
+            if card.rank == "A":
+                num_aces += 1
+                hand_value += card.get_card_value()
+            else:
+                hand_value += card.get_card_value()
+
+        while hand_value > 21 and num_aces > 0:
+            hand_value -= 10
+            num_aces -= 1
+
+        return hand_value
+
+    def handleBlackjack(self, player, dealer, deck, bet=50):
+        dealer_hand_value = Game.handleDealer(dealer.getHand(), dealer, deck)
+
+        if dealer_hand_value == 21:
+            print("Push (Tie)!")
+            player.setMoney(player.getMoney() + bet)
+        else:
+            print("BLACKJACK!!!")
+            player.setMoney(player.getMoney() + bet * 2)
+
+    def handleDealer(self, hand, dealer, deck):
+        dealer.printHand()
+        hand_value = Game.calculateHand(hand)
+
+        while hand_value < 17:
+            dealer.receiveCard(deck.deal())
+            hand_value = Game.calculateHand(hand)
+            dealer.printHand()
+
+        return hand_value
