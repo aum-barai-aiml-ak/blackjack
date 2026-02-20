@@ -9,7 +9,7 @@ class Card:
         self.suit = suit
         self.value = Card.VALUES[rank]
 
-    def __str__(self):
+    def __repr__(self):
         return f"{self.rank} of {self.suit} (Value: {self.value})"
 
     def get_card_value(self):
