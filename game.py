@@ -50,12 +50,11 @@ class Player:
 
 class Dealer(Player):
     def print_hand(self, round_num=0):
-        current_hand = self.get_hand(0) 
+        current_hand = self.get_hand(0)
         if round_num == 1:
             print("Dealer's Hand: [Hidden],", current_hand[1])
         else:
             print("Dealer's Hand:", *current_hand)
-
 
 
 class Game:
@@ -72,7 +71,7 @@ class Game:
     def split_hand(self, hand_index):
         if hand_index >= len(self.player.hands):
             return False
-            
+
         current_hand = self.player.hands[hand_index]
 
         if not self.can_split(current_hand):
@@ -83,7 +82,7 @@ class Game:
         if self.player.get_money() < self.bet:
             print("Not enough money to split.")
             return False
-            
+
         self.player.set_money(self.player.get_money() - self.bet)
 
         # 2. Separate the cards
@@ -96,7 +95,7 @@ class Game:
         # 4. Deal a new card to both hands
         current_hand.append(self.deck.deal())
         new_hand.append(self.deck.deal())
-        
+
         print("Hand split successfully!")
         return True
 
@@ -108,7 +107,7 @@ class Game:
         for card in hand:
             if card.rank == "A":
                 num_aces += 1
-                hand_value += 11 
+                hand_value += 11
             else:
                 hand_value += card.get_card_value()
 
@@ -119,7 +118,7 @@ class Game:
         return hand_value
 
     def handle_dealer(self):
-        self.dealer.print_hand(round_num=2) 
+        self.dealer.print_hand(round_num=2)
         hand_value = self.calculate_hand(self.dealer.get_hand(0))
 
         while hand_value < 17:
@@ -131,18 +130,18 @@ class Game:
                 self.dealer.print_hand(round_num=2)
             else:
                 break
-        
+
         print(f"Dealer stands at {hand_value}")
         return hand_value
 
     def determine_winner(self):
         # We must iterate through all player hands (in case of split)
         dealer_value = self.handle_dealer()
-        
+
         for i, hand in enumerate(self.player.hands):
             player_value = self.calculate_hand(hand)
             print(f"--- Result for Hand {i+1} ---")
-            
+
             if player_value > 21:
                 print(f"Hand {i+1} Busted! You lose.")
                 # Money already lost (bet not returned)
@@ -154,6 +153,6 @@ class Game:
                 self.player.set_money(self.player.get_money() + (self.bet * 2))
             elif player_value == dealer_value:
                 print(f"Push (Tie) at {player_value}.")
-                self.player.set_money(self.player.get_money() + self.bet)
+                self.player.set_money(self.player.get_money() - self.bet)
             else:
                 print(f"Dealer wins ({dealer_value} vs {player_value}).")
