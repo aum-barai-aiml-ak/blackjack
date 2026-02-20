@@ -22,8 +22,32 @@ class Deck:
 
 
 class Player:
-    pass
+    def __init__(self):
+        self.money = 1000
+        self.hand = []
+
+    def getHand(self):
+        return self.hand
+
+    def receiveCard(self, card):
+        self.hand.append(card)
+
+    def printHand(self):
+        print("Current Hand: ", *self.hand)
+
+    def clearHand(self):
+        self.hand = []
+
+    def getMoney(self):
+        return self.money
+
+    def setMoney(self, newMoney):
+        self.money = newMoney
 
 
 class Dealer(Player):
-    pass
+	def printHand(self, round_num=0):
+		if round_num == 1:
+			print("Dealer's Hand:", self.hand[1])
+		else:
+			print("Dealer's Hand:", *self.hand)
