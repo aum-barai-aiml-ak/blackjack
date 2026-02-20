@@ -7,9 +7,7 @@ class Card:
     def __init__(self, rank, suit):
         self.rank = rank
         self.suit = suit
-        self.points = Card.VALUES[rank]
+        self.value = Card.VALUES[rank]
 
     def __str__(self):
-        return f"{self.rank} {self.suit} (Value: {self.points})"
-
-
+        return f"{self.rank} of {self.suit} (Value: {self.value})"
