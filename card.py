@@ -11,3 +11,6 @@ class Card:
 
     def __str__(self):
         return f"{self.rank} of {self.suit} (Value: {self.value})"
+
+    def get_card_value(self):
+        return self.value
