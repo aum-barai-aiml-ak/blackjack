@@ -12,7 +12,7 @@ class Deck:
         for rank in Deck.ranks:
             for suit in Deck.suits:
                 self.cards.append(Card(rank, suit))
-        Deck.shuffle(self)
+        self.shuffle()
 
     def shuffle(self):
         random.shuffle(self.cards)
@@ -26,27 +26,27 @@ class Player:
         self.money = 1000
         self.hand = []
 
-    def getHand(self):
+    def get_hand(self):
         return self.hand
 
-    def receiveCard(self, card):
+    def receive_card(self, card):
         self.hand.append(card)
 
-    def printHand(self):
+    def print_hand(self):
         print("Current Hand: ", *self.hand)
 
-    def clearHand(self):
+    def clear_hand(self):
         self.hand = []
 
-    def getMoney(self):
+    def get_money(self):
         return self.money
 
-    def setMoney(self, newMoney):
+    def set_money(self, newMoney):
         self.money = newMoney
 
 
 class Dealer(Player):
-    def printHand(self, round_num=0):
+    def print_hand(self, round_num=0):
         if round_num == 1:
             print("Dealer's Hand:", self.hand[1])
         else:
@@ -54,8 +54,8 @@ class Dealer(Player):
 
 
 class Game:
-
-    def calculateHand(self, hand):
+    @staticmethod
+    def calculate_hand(hand):
         hand_value = 0
         num_aces = 0
 
@@ -72,23 +72,23 @@ class Game:
 
         return hand_value
 
-    def handleBlackjack(self, player, dealer, deck, bet=50):
-        dealer_hand_value = Game.handleDealer(dealer.getHand(), dealer, deck)
+    def handle_blackjack(self, player, dealer, deck, bet=50):
+        dealer_hand_value = Game.handle_dealer(dealer.get_hand(), dealer, deck)
 
         if dealer_hand_value == 21:
             print("Push (Tie)!")
-            player.setMoney(player.getMoney() + bet)
+            player.set_money(player.get_money() + bet)
         else:
             print("BLACKJACK!!!")
-            player.setMoney(player.getMoney() + bet * 2)
+            player.set_money(player.get_money() + bet * 2)
 
-    def handleDealer(self, hand, dealer, deck):
-        dealer.printHand()
-        hand_value = Game.calculateHand(hand)
+    def handle_dealer(self, hand, dealer, deck):
+        dealer.print_hand()
+        hand_value = Game.calculate_hand(hand)
 
         while hand_value < 17:
-            dealer.receiveCard(deck.deal())
-            hand_value = Game.calculateHand(hand)
-            dealer.printHand()
+            dealer.receive_card(deck.deal())
+            hand_value = Game.calculate_hand(hand)
+            dealer.print_hand()
 
         return hand_value
