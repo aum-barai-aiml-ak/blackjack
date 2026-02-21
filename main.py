@@ -40,7 +40,7 @@ def play_round(deck, player, dealer):
                 print(f"Bust! Hand {hand_index + 1} went over 21.")
                 break
             # Stand at 21
-            if score > 21:
+            if score == 21:
                 print(f"21! Moving to next hand/dealer.")
                 break
             
